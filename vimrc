@@ -93,3 +93,4 @@ set whichwrap=b,s,h,l,<,>,[,],~
 " バッファスクロール
 set mouse-=a
 
+set encoding=utf-8

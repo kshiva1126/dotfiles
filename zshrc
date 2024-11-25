@@ -12,6 +12,7 @@ autoload -Uz colors
 colors
 
 # 補完
+fpath=(~/.zsh $fpath)
 autoload -Uz compinit
 compinit
 
@@ -73,6 +74,9 @@ bindkey "^[[3~" delete-char
 
 # どこからでも参照できるディレクトリパス
 cdpath=(~)
+
+# less Charset
+export LESSCHARSET=utf-8
 
 # 区切り文字の設定
 autoload -Uz select-word-style
@@ -162,26 +166,25 @@ zstyle ':vcs_info:*' formats "%F{green}%c%u[%b]%f"
 zstyle ':vcs_info:*' actionformats '[%b|%a]'
 precmd () { vcs_info }
 RPROMPT=$RPROMPT'${vcs_info_msg_0_}'
+alias first-commit="git commit --allow-empty -m 'first commit'"
 
-# anyenv
-export PATH="$HOME/.anyenv/bin:$PATH"
-eval "$(anyenv init -)"
+# https://learn.microsoft.com/ja-jp/windows/terminal/tutorials/new-tab-same-directory
+keep_current_path() {
+  printf "\e]9;9;%s\e\\" "$(wslpath -w "$PWD")"
+}
+precmd_functions+=(keep_current_path)
 
-# mysql-client
-export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
+# volta
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
 
-# cargo
-export PATH="$HOME/.cargo/bin:$PATH"
+# Deno
+export DENO_INSTALL="/home/kshiva/.deno"
+export PATH="$DENO_INSTALL/bin:$PATH"
 
-# flutter
-export PATH="$PATH:/Users/kshiva/work/flutter/bin"
-
-# yarn
-export PATH="$PATH:/Users/kshiva/.yarn/bin"
-
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="/Users/kshiva/.sdkman"
-[[ -s "/Users/kshiva/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/kshiva/.sdkman/bin/sdkman-init.sh"
-export JAVA_HOME=$HOME/.sdkman/candidates/java/current
-export PATH="$PATH:$JAVA_HOME/bin"
+# Java
+JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::")
+export JAVA_HOME
+PATH=$PATH:$JAVA_HOME/bin
+export PATH
 
