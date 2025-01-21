@@ -12,7 +12,6 @@ autoload -Uz colors
 colors
 
 # 補完
-fpath=(~/.zsh $fpath)
 autoload -Uz compinit
 compinit
 
@@ -55,9 +54,8 @@ alias l='ls -ltr --color=auto'
 alias la='ls -la --color=auto'
 alias ll='ls -l --color=auto'
 alias so='source'
-alias v='vim'
-alias vi='vim'
-alias vz='vim ~/.zshrc'
+alias vim='nvim'
+alias vz='nvim ~/.zshrc'
 alias c='cdr'
 # historyに日付を表示
 alias h='fc -lt '%F %T' 1'
@@ -75,9 +73,6 @@ bindkey "^[[3~" delete-char
 # どこからでも参照できるディレクトリパス
 cdpath=(~)
 
-# less Charset
-export LESSCHARSET=utf-8
-
 # 区切り文字の設定
 autoload -Uz select-word-style
 select-word-style default
@@ -86,10 +81,6 @@ zstyle ':zle:*' word-style unspecified
 
 # Ctrl+sのロック, Ctrl+qのロック解除を無効にする
 setopt no_flow_control
-
-# プロンプトを2行で表示、時刻を表示
-PROMPT="%(?.%{${fg[green]}%}.%{${fg[red]}%})%n${reset_color}@${fg[blue]}%m${reset_color}(%*%) %~
-%# "
 
 # 補完後、メニュー選択モードになり左右キーで移動が出来る
 zstyle ':completion:*:default' menu select=2
@@ -131,60 +122,41 @@ function mkcd() {
   fi
 }
 
-# homebrew設定
-typeset -U path PATH
-path=(
-	/opt/homebrew/bin(N-/)
-	/usr/local/bin(N-/)
-	$path
-)
-
-if (( $+commands[sw_vers] )) && (( $+commands[arch] )); then
-	[[ -x /usr/local/bin/brew ]] && alias brew="arch -arch x86_64 /usr/local/bin/brew"
-	alias x64='exec arch -x86_64 /bin/zsh'
-	alias a64='exec arch -arm64e /bin/zsh'
-	switch-arch() {
-		if  [[ "$(uname -m)" == arm64 ]]; then
-			arch=x86_64
-		elif [[ "$(uname -m)" == x86_64 ]]; then
-			arch=arm64e
-		fi
-		exec arch -arch $arch /bin/zsh
-	}
-fi
-
-setopt magic_equal_subst
-
-# git設定
-RPROMPT="%{${fg[blue]}%}[%~]%{${reset_color}%}"
+# Git情報を取得するための準備
 autoload -Uz vcs_info
 setopt prompt_subst
+
+# vcs_infoの設定
 zstyle ':vcs_info:git:*' check-for-changes true
 zstyle ':vcs_info:git:*' stagedstr "%F{yellow}!"
 zstyle ':vcs_info:git:*' unstagedstr "%F{red}+"
 zstyle ':vcs_info:*' formats "%F{green}%c%u[%b]%f"
 zstyle ':vcs_info:*' actionformats '[%b|%a]'
-precmd () { vcs_info }
-RPROMPT=$RPROMPT'${vcs_info_msg_0_}'
-alias first-commit="git commit --allow-empty -m 'first commit'"
 
-# https://learn.microsoft.com/ja-jp/windows/terminal/tutorials/new-tab-same-directory
-keep_current_path() {
-  printf "\e]9;9;%s\e\\" "$(wslpath -w "$PWD")"
-}
-precmd_functions+=(keep_current_path)
+# precmdフックにvcs_infoを追加
+precmd_functions+=(vcs_info)
 
-# volta
+# 2行プロンプトの設定
+PROMPT="%(?.%{${fg[green]}%}.%{${fg[red]}%})%n${reset_color}@${fg[blue]}%m${reset_color}(%*%) %~ %{${fg[blue]}%}${vcs_info_msg_0_}%{${reset_color}%}
+%# "
+
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
 
-# Deno
-export DENO_INSTALL="/home/kshiva/.deno"
-export PATH="$DENO_INSTALL/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+export PATH="/home/kshiva/.rd/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
-# Java
-JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::")
-export JAVA_HOME
-PATH=$PATH:$JAVA_HOME/bin
-export PATH
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# neovim
+export PATH="$PATH:/opt/nvim/"
+
+# cursor
+function cursor() {
+  (nohup cursor "$@" > /dev/null 2>&1 &)
+}
+alias code='cursor'
+function cursor-update() {
+  ~/Applications/cursor/update-cursor.sh
+}
