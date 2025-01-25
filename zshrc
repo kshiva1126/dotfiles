@@ -82,6 +82,10 @@ zstyle ':zle:*' word-style unspecified
 # Ctrl+sのロック, Ctrl+qのロック解除を無効にする
 setopt no_flow_control
 
+# プロンプトを2行で表示、時刻を表示
+PROMPT="%(?.%{${fg[green]}%}.%{${fg[red]}%})%n${reset_color}@${fg[blue]}%m${reset_color}(%*%) %~
+%# "
+
 # 補完後、メニュー選択モードになり左右キーで移動が出来る
 zstyle ':completion:*:default' menu select=2
 
@@ -122,23 +126,17 @@ function mkcd() {
   fi
 }
 
-# Git情報を取得するための準備
+# git設定
+RPROMPT="%{${fg[blue]}%}[%~]%{${reset_color}%}"
 autoload -Uz vcs_info
 setopt prompt_subst
-
-# vcs_infoの設定
 zstyle ':vcs_info:git:*' check-for-changes true
 zstyle ':vcs_info:git:*' stagedstr "%F{yellow}!"
 zstyle ':vcs_info:git:*' unstagedstr "%F{red}+"
 zstyle ':vcs_info:*' formats "%F{green}%c%u[%b]%f"
 zstyle ':vcs_info:*' actionformats '[%b|%a]'
-
-# precmdフックにvcs_infoを追加
-precmd_functions+=(vcs_info)
-
-# 2行プロンプトの設定
-PROMPT="%(?.%{${fg[green]}%}.%{${fg[red]}%})%n${reset_color}@${fg[blue]}%m${reset_color}(%*%) %~ %{${fg[blue]}%}${vcs_info_msg_0_}%{${reset_color}%}
-%# "
+precmd () { vcs_info }
+RPROMPT=$RPROMPT'${vcs_info_msg_0_}'
 
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
@@ -160,3 +158,35 @@ alias code='cursor'
 function cursor-update() {
   ~/Applications/cursor/update-cursor.sh
 }
+
+# Go
+export PATH=$PATH:$HOME/go/bin
+
+# ghq
+cd_git_repo() {
+  local selected="$(ghq list | fzf)"
+
+  if [[ -n "$selected" ]]; then
+    cd "$(ghq root)/$selected"
+  fi
+}
+# ctrl + gでローカルのGitリポジトリをあいまい検索できるように
+bindkey -s '^g' 'cd_git_repo\n'
+
+# git switchあいまい検索
+switch_git_branch() {
+  local branches branch
+  branches=$(git branch -a | sed 's/^\*//g' | sed 's/remotes\/origin\///g' | sort | uniq) && \
+  branch=$(echo "$branches" | fzf --height 40% --reverse) && \
+  git switch $(echo $branch | sed 's/.* //')
+}
+alias gs='switch_git_branch'
+
+# historyあいまい検索
+history_search() {
+  local cmd
+  cmd=$(history | fzf | awk '{print substr($0, index($0,$2))}')
+  [ -n "$cmd" ] && eval "$cmd"
+}
+bindkey -s '^r' 'history_search\n'
+
