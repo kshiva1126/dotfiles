@@ -7,14 +7,6 @@ export LANG=ja_JP.UTF-8
 # パスを追加したい場合
 export PATH="$HOME/bin:$PATH"
 
-# 色を使用
-autoload -Uz colors
-colors
-
-# 補完
-autoload -Uz compinit
-compinit
-
 # emacsキーバインド
 bindkey -e
 
@@ -82,10 +74,6 @@ zstyle ':zle:*' word-style unspecified
 # Ctrl+sのロック, Ctrl+qのロック解除を無効にする
 setopt no_flow_control
 
-# プロンプトを2行で表示、時刻を表示
-PROMPT="%(?.%{${fg[green]}%}.%{${fg[red]}%})%n${reset_color}@${fg[blue]}%m${reset_color}(%*%) %~
-%# "
-
 # 補完後、メニュー選択モードになり左右キーで移動が出来る
 zstyle ':completion:*:default' menu select=2
 
@@ -125,18 +113,6 @@ function mkcd() {
     mkdir -p $1 && cd $1
   fi
 }
-
-# git設定
-RPROMPT="%{${fg[blue]}%}[%~]%{${reset_color}%}"
-autoload -Uz vcs_info
-setopt prompt_subst
-zstyle ':vcs_info:git:*' check-for-changes true
-zstyle ':vcs_info:git:*' stagedstr "%F{yellow}!"
-zstyle ':vcs_info:git:*' unstagedstr "%F{red}+"
-zstyle ':vcs_info:*' formats "%F{green}%c%u[%b]%f"
-zstyle ':vcs_info:*' actionformats '[%b|%a]'
-precmd () { vcs_info }
-RPROMPT=$RPROMPT'${vcs_info_msg_0_}'
 
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
@@ -190,3 +166,5 @@ history_search() {
 }
 bindkey -s '^r' 'history_search\n'
 
+# starship
+eval "$(starship init zsh)"
