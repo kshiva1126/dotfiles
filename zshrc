@@ -117,23 +117,17 @@ function mkcd() {
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
 
-### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-export PATH="/home/kshiva/.rd/bin:$PATH"
-### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # neovim
 export PATH="$PATH:/opt/nvim/"
 
 # cursor
+export PATH="$HOME/.local/bin:$PATH"
 function cursor() {
   (nohup cursor "$@" > /dev/null 2>&1 &)
 }
-alias code='cursor'
-function cursor-update() {
-  ~/Applications/cursor/update-cursor.sh
-}
+alias cur='cursor'
 
 # Go
 export PATH=$PATH:$HOME/go/bin
