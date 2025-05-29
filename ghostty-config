@@ -7,4 +7,4 @@ font-thicken = true
 # dlig (合字) を無効にしないと「ます」が「〼」で表示される。
 font-feature = -dlig
 auto-update-channel = tip
-theme = Laser
+theme = Ayu Mirage
