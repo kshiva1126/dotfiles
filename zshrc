@@ -123,7 +123,7 @@ export PATH="$VOLTA_HOME/bin:$PATH"
 export PATH="$PATH:/opt/nvim/"
 
 # cursor
-export PATH="$HOME/.local/bin:$PATH"
+#export PATH="$HOME/.local/bin:$PATH"
 function cursor() {
   (nohup cursor "$@" > /dev/null 2>&1 &)
 }
@@ -155,10 +155,19 @@ alias gs='switch_git_branch'
 # historyあいまい検索
 history_search() {
   local cmd
-  cmd=$(history | fzf | awk '{print substr($0, index($0,$2))}')
+  cmd=$(history 1 | fzf | awk '{print substr($0, index($0,$2))}')
   [ -n "$cmd" ] && eval "$cmd"
 }
 bindkey -s '^r' 'history_search\n'
 
 # starship
 eval "$(starship init zsh)"
+
+# Rust
+source $HOME/.cargo/env
+
+# Gemini CLI
+export GOOGLE_CLOUD_PROJECT="central-mission-464403-r9"
+
+autoload -U compinit
+compinit
