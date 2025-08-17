@@ -164,10 +164,16 @@ bindkey -s '^r' 'history_search\n'
 eval "$(starship init zsh)"
 
 # Rust
-source $HOME/.cargo/env
+# source $HOME/.cargo/env
+export PATH=$PATH:/home/kshiva/.cargo/bin
 
 # Gemini CLI
 export GOOGLE_CLOUD_PROJECT="central-mission-464403-r9"
+
+if type mise &>/dev/null; then
+  eval "$(mise activate zsh)"
+  eval "$(mise activate --shims)"
+fi
 
 autoload -U compinit
 compinit
