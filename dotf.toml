@@ -1,7 +1,7 @@
 [symlinks]
 # Source (in repo) -> Target (on system)
 "config/nvim" = "~/.config/nvim"
-"config/starship" = "~/.config/starship.toml"
-"config/ghostty" = "~/.config/ghostty/config"
+"config/starship.toml" = "~/.config/starship.toml"
+"config/ghostty/config" = "~/.config/ghostty/config"
 ".zshrc" = "~/.zshrc"
 ".vimrc" = "~/.vimrc"
