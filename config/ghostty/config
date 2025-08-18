@@ -8,3 +8,6 @@ font-thicken = true
 font-feature = -dlig
 auto-update-channel = tip
 theme = Ayu Mirage
+
+# 改行を入力するときは shift+enter を押す
+keybind = shift+enter=text:\\\n\r
