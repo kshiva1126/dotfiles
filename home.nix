@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   imports = [
@@ -10,7 +10,7 @@
   ];
 
   home.username = "kshiva";
-  home.homeDirectory = "/home/kshiva";
+  home.homeDirectory = if pkgs.stdenv.isDarwin then "/Users/kshiva" else "/home/kshiva";
   home.stateVersion = "26.05";
 
   home.sessionVariables = {

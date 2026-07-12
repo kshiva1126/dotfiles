@@ -23,8 +23,14 @@ ln -s ~/path/to/dotfiles ~/dotfiles
 
 ### 3. Home Manager の適用
 
+プラットフォームに応じて構成名を指定する:
+
 ```sh
-nix run home-manager -- switch --flake ~/dotfiles -b backup
+# macOS (Apple Silicon)
+nix run home-manager -- switch --flake ~/dotfiles#kshiva@mac -b backup
+
+# Linux (x86_64)
+nix run home-manager -- switch --flake ~/dotfiles#kshiva@linux -b backup
 ```
 
 ## 設定の変更
@@ -32,7 +38,8 @@ nix run home-manager -- switch --flake ~/dotfiles -b backup
 `~/dotfiles/` 内のファイルを編集して再適用:
 
 ```sh
-home-manager switch --flake ~/dotfiles -b backup
+home-manager switch --flake ~/dotfiles#kshiva@mac -b backup    # macOS
+home-manager switch --flake ~/dotfiles#kshiva@linux -b backup  # Linux
 ```
 
 ## 構成

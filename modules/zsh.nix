@@ -55,8 +55,8 @@
       export PATH="$VOLTA_HOME/bin:$PATH"
       export PATH="$PATH:/opt/nvim/"
       export PATH="$HOME/.moon/bin:$PATH"
-      export PATH="/home/kshiva/.amp/bin:$PATH"
-      export PATH="/home/kshiva/.opencode/bin:$PATH"
+      export PATH="$HOME/.amp/bin:$PATH"
+      export PATH="$HOME/.opencode/bin:$PATH"
       case ":$PATH:" in
         *":$PNPM_HOME:"*) ;;
         *) export PATH="$PNPM_HOME:$PATH" ;;
