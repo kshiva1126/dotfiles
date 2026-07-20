@@ -46,6 +46,11 @@
     };
 
     initExtraFirst = ''
+      # Ubuntu/WSL の zsh は /etc/profile.d/nix.sh を自動で読み込まない。
+      if [ -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
+        source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+      fi
+
       setopt IGNOREEOF
       bindkey -e
     '';
