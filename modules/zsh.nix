@@ -29,6 +29,7 @@
       diff = "diff -U1";
       gs = "switch_git_branch";
       zmv = "noglob zmv -W";
+      slack-restart = "killall slack 2>/dev/null; killall -9 slack 2>/dev/null; sleep 1; slack &disown";
     };
 
     shellGlobalAliases = {
@@ -140,18 +141,16 @@
       }
       bindkey -s '^r' 'history_search\n'
 
-      # gtr / worktree helpers
+      # herdr worktree helpers
       work() {
         local branch="$1"
-        local mode="''${2:-both}"
-        git gtr go "$branch" &>/dev/null || git gtr new "$branch"
-        case "$mode" in
-          both)   git gtr editor "$branch"; git gtr ai "$branch" ;;
-          ai)     git gtr ai "$branch" ;;
-          editor) git gtr editor "$branch" ;;
-        esac
+        herdr worktree create --branch "$branch" --focus
       }
-      wtcd() { cd "$(git gtr go "$1")"; }
+      wtcd() {
+        local path
+        path=$(herdr worktree list --json | jq -r --arg b "$1" '.result.worktrees[] | select(.branch == $b) | .path')
+        [[ -n "$path" ]] && cd "$path"
+      }
 
       # secret env
       if [ -f ~/.zshrc_secret ]; then

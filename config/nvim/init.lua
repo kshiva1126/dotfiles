@@ -24,25 +24,6 @@ vim.g.loaded_netrwPlugin = 1
 -- optionally enable 24-bit colour
 vim.opt.termguicolors = true
 
--- empty setup using defaults
-require("nvim-tree").setup()
-
--- OR setup with some options
-require("nvim-tree").setup({
-  sort = {
-    sorter = "case_sensitive",
-  },
-  view = {
-    width = 30,
-  },
-  renderer = {
-    group_empty = true,
-  },
-  filters = {
-    dotfiles = true,
-  },
-})
-
 -- https://raw.githubusercontent.com/neoclide/coc.nvim/master/doc/coc-example-config.lua
 
 -- Some servers have issues with backup files, see #649
@@ -245,4 +226,3 @@ vim.opt.softtabstop = 2 -- タブ入力時、削除時に使われるスペー�
 -- コメントアウト
 vim.keymap.set("n", "<C-_>", "gcc", { noremap = false, silent = true }) -- ノーマルモードでCtrl + /
 vim.keymap.set("v", "<C-_>", "gc", { noremap = false, silent = true }) -- ビジュアルモードでCtrl + /
-
