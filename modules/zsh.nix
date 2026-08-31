@@ -58,6 +58,7 @@
 
     initExtra = ''
       # PATH (mise, volta, etc.)
+      export PATH="$HOME/.local/bin:$PATH"
       export PATH="$VOLTA_HOME/bin:$PATH"
       export PATH="$PATH:/opt/nvim/"
       export PATH="$HOME/.moon/bin:$PATH"
