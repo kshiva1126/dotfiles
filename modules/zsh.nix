@@ -76,7 +76,7 @@
       setopt no_flow_control
 
       # keybindings
-      stty erase '^?'
+      [[ -t 0 ]] && stty erase '^?'
       bindkey "^[[3~" delete-char
 
       cdpath=(~)
