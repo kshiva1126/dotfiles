@@ -6,6 +6,7 @@
     ./modules/neovim.nix
     ./modules/ghostty.nix
     ./modules/starship.nix
+    ./modules/mise.nix
     ./modules/git.nix
   ];
 

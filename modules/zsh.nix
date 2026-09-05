@@ -40,7 +40,6 @@
     };
 
     sessionVariables = {
-      VOLTA_HOME = "$HOME/.volta";
       GOOGLE_CLOUD_PROJECT = "central-mission-464403-r9";
       JAVA_HOME = "/usr/lib/jvm/java-21-openjdk";
       PNPM_HOME = "$HOME/.local/share/pnpm";
@@ -57,9 +56,8 @@
     '';
 
     initExtra = ''
-      # PATH (mise, volta, etc.)
+      # PATH
       export PATH="$HOME/.local/bin:$PATH"
-      export PATH="$VOLTA_HOME/bin:$PATH"
       export PATH="$PATH:/opt/nvim/"
       export PATH="$HOME/.moon/bin:$PATH"
       export PATH="$HOME/.amp/bin:$PATH"
@@ -156,11 +154,6 @@
       # secret env
       if [ -f ~/.zshrc_secret ]; then
         source ~/.zshrc_secret
-      fi
-
-      # mise
-      if type mise &>/dev/null; then
-        eval "$(mise activate zsh)"
       fi
 
       [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
