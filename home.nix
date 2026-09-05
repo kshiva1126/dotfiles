@@ -16,6 +16,9 @@
   home.sessionVariables = {
     LANG = "ja_JP.UTF-8";
     EDITOR = "nvim";
+    # Make Ghostty's terminal capabilities available to Nix-linked programs
+    # on non-NixOS hosts and over SSH.
+    TERMINFO_DIRS = "${pkgs.ghostty.terminfo}/share/terminfo";
   };
 
   home.sessionPath = [
