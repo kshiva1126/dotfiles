@@ -42,6 +42,17 @@ home-manager switch --flake ~/dotfiles#kshiva@mac -b backup    # macOS
 home-manager switch --flake ~/dotfiles#kshiva@linux -b backup  # Linux
 ```
 
+## パッケージの更新
+
+zshから次のコマンドを実行すると、nixpkgsのロック更新とHome Managerの
+適用をまとめて行う:
+
+```sh
+nixup
+```
+
+最後に更新が成功してから1週間以上経過すると、SSHログイン時に案内を表示する。
+
 ## 構成
 
 ```
@@ -52,6 +63,7 @@ modules/
   neovim.nix       # Neovim 設定
   ghostty.nix      # Ghostty 設定
   starship.nix     # Starship 設定
+  mise.nix         # mise と zsh 統合
   git.nix          # Git 設定
 config/
   nvim/            # Neovim 設定ファイル群

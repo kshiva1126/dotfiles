@@ -151,6 +151,43 @@
         [[ -n "$path" ]] && cd "$path"
       }
 
+      # Update the pinned Nix packages and apply the Home Manager configuration.
+      nixup() {
+        local config
+        local state_dir="$HOME/.local/state/nixup"
+        local marker="$state_dir/last-success"
+
+        case "$OSTYPE" in
+          darwin*) config="kshiva@mac" ;;
+          linux*) config="kshiva@linux" ;;
+          *) print -u2 -- "nixup: unsupported platform: $OSTYPE"; return 1 ;;
+        esac
+
+        (
+          cd "$HOME/dotfiles" || return 1
+          nix flake update nixpkgs &&
+            home-manager switch --flake ".#$config" -b backup &&
+            mkdir -p "$state_dir" &&
+            touch "$marker"
+        )
+      }
+
+      # Remind interactive SSH sessions when Nix packages have not been
+      # refreshed successfully for at least one week.
+      _nixup_reminder() {
+        [[ -n "''${SSH_CONNECTION-}" ]] || return
+
+        local marker="$HOME/.local/state/nixup/last-success"
+        local -a stale_markers
+        stale_markers=("$marker"(N.mh+168))
+
+        if [[ ! -e "$marker" || ''${#stale_markers} -gt 0 ]]; then
+          print -P -- "%F{yellow}Nixパッケージの更新確認: %B'nixup'%b を実行してください。%f"
+        fi
+      }
+      _nixup_reminder
+      unfunction _nixup_reminder
+
       # secret env
       if [ -f ~/.zshrc_secret ]; then
         source ~/.zshrc_secret
