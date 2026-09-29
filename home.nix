@@ -38,5 +38,10 @@
     ripgrep
   ];
 
+  programs.direnv = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
   programs.home-manager.enable = true;
 }
