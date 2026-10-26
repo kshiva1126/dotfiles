@@ -25,8 +25,11 @@
       homeConfigurations = {
         "kshiva@mac" = mkHome "aarch64-darwin" "kshiva" [ ];
         "kshiva@linux" = mkHome "x86_64-linux" "kshiva" [ ];
-        # 共有の NixOS サーバー integritis-dev。ログインシェルを変えられないので bash から zsh に切り替える
-        "kshiva1126@linux" = mkHome "x86_64-linux" "kshiva1126" [ ./modules/bash-exec-zsh.nix ];
+        # 共有の NixOS サーバー integritis-dev。システムの設定を変えずに、zsh と flakes をこのユーザーだけで使う
+        "kshiva1126@linux" = mkHome "x86_64-linux" "kshiva1126" [
+          ./modules/bash-exec-zsh.nix
+          ./modules/nix-flakes.nix
+        ];
       };
     };
 }
