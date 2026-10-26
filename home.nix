@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, username, ... }:
 
 {
   imports = [
@@ -10,8 +10,8 @@
     ./modules/git.nix
   ];
 
-  home.username = "kshiva";
-  home.homeDirectory = if pkgs.stdenv.isDarwin then "/Users/kshiva" else "/home/kshiva";
+  home.username = username;
+  home.homeDirectory = if pkgs.stdenv.isDarwin then "/Users/${username}" else "/home/${username}";
   home.stateVersion = "26.05";
 
   home.sessionVariables = {

@@ -158,8 +158,8 @@
         local marker="$state_dir/last-success"
 
         case "$OSTYPE" in
-          darwin*) config="kshiva@mac" ;;
-          linux*) config="kshiva@linux" ;;
+          darwin*) config="$USER@mac" ;;
+          linux*) config="$USER@linux" ;;
           *) print -u2 -- "nixup: unsupported platform: $OSTYPE"; return 1 ;;
         esac
 

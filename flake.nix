@@ -14,16 +14,19 @@
     { nixpkgs, home-manager, ... }:
     let
       mkHome =
-        system:
+        system: username: extraModules:
         home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${system};
-          modules = [ ./home.nix ];
+          modules = [ ./home.nix ] ++ extraModules;
+          extraSpecialArgs = { inherit username; };
         };
     in
     {
       homeConfigurations = {
-        "kshiva@mac" = mkHome "aarch64-darwin";
-        "kshiva@linux" = mkHome "x86_64-linux";
+        "kshiva@mac" = mkHome "aarch64-darwin" "kshiva" [ ];
+        "kshiva@linux" = mkHome "x86_64-linux" "kshiva" [ ];
+        # 共有の NixOS サーバー integritis-dev。ログインシェルを変えられないので bash から zsh に切り替える
+        "kshiva1126@linux" = mkHome "x86_64-linux" "kshiva1126" [ ./modules/bash-exec-zsh.nix ];
       };
     };
 }
