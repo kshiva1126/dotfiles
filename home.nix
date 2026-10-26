@@ -32,6 +32,7 @@
 
   home.packages = with pkgs; [
     bat
+    fastfetch
     fd
     fzf
     ghq
